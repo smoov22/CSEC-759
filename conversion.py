@@ -1,7 +1,11 @@
 import cmath
+import numpy
 import glob
 import pandas as pd
 import os
+
+SENSITIVITY = 1
+EPSILON = 0.5
 
 def data_point(cartesianpile):
     csv_files = glob.glob('./csec_data/*.csv')
@@ -22,8 +26,25 @@ def cartesian_to_polar(coordinates, polars):
         polars.append((r,theta))
     return polars
 
-def noise(polar):
-    return polar
+def polar_to_cartesian(polars):
+    coordinates = []
+    for polar in polars:
+        r, theta = polar[0], polar[1]
+        c = cmath.rect(r, theta)
+        coordinates.append((c.real, c.imag))
+    return coordinates
+
+def noise(polars):
+    b = SENSITIVITY/EPSILON
+    n = len(polars)
+    altered = []
+    # replace with a real laplace function
+    noise_values = numpy.random.laplace(0, b, n)
+    for (r, theta), noise in zip(polars, noise_values):
+        noisy_r = r + noise
+        altered.append((noisy_r, theta))
+    return altered
+
 
 def main():
     cartesianpile = set()
@@ -32,6 +53,10 @@ def main():
     print(coordinates[1738])
     polars = cartesian_to_polar(coordinates, polars=[])
     print(polars[1738])
+    noise_polars = noise(polars)
+    print(noise_polars[1738])
+    noise_coordinates = polar_to_cartesian(polars)
+    print(noise_coordinates[1738])
 
 
 main()
