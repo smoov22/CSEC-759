@@ -5,7 +5,7 @@ import pandas as pd
 import os
 import math
 
-SENSITIVITY = 1
+SENSITIVITY = 10
 EPSILON = 0.05
 EARTH_RADIUS_METERS = 111320  # Approximate length of one degree of latitude in meters
 
