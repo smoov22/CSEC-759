@@ -58,4 +58,12 @@ def main():
     print(f"Noisy (r, theta): {original_coords[1738][4]}, {original_coords[1738][5]}")
     print(f"Noisy (lon, lat): {original_coords[1738][6]}, {original_coords[1738][7]}")
 
+    df_output = pd.DataFrame(original_coords, columns=["Longitude", "Latitude", "Original r", "Original Theta", "Noise r", "Noise Theta", "Perturbed Longitude", "Perturbed Latitude"])
+    df_output.to_csv("perturbed_data.csv", index=False)
+    print("CSV file 'perturbed_data.csv' created with transformed data.")
+
+    df_output_filtered = df_output[["Longitude", "Latitude", "Perturbed Longitude", "Perturbed Latitude"]]
+    df_output_filtered.to_csv("perturbed_data_filtered.csv", index=False)
+    print("CSV file 'perturbed_data_filtered.csv' created without polar columns.")
+
 main()
