@@ -38,20 +38,26 @@ def data_point(cartesianpile, original_coords):
     csv_files = glob.glob('./csec_data/*.csv')
     for file in csv_files:
         df = pd.read_csv(file)
+        file_name = os.path.basename(file)
+        individual_data = []
         for index, row in df.iterrows():
-            longitude = row.iloc[0]  # First column
-            latitude = row.iloc[1]  # Second column
+            longitude = row.iloc[0]
+            latitude = row.iloc[1]
             r_orig, theta_orig = cartesian_to_polar(longitude, latitude)
             noisy_lat, noisy_lon, r, theta = apply_planar_laplace(latitude, longitude)
             cartesianpile.add((noisy_lon, noisy_lat))
             original_coords.append((longitude, latitude, r_orig, theta_orig, r, theta, noisy_lon, noisy_lat))
-        print(f"Processed {os.path.basename(file)}")
+            individual_data.append((longitude, latitude, noisy_lon, noisy_lat))
+        print(f"Processed {file_name}")
+        
+        df_individual = pd.DataFrame(individual_data, columns=["Longitude", "Latitude", "Perturbed Longitude", "Perturbed Latitude"])
+        df_individual.to_csv(f"perturbed_{file_name}", index=False)
+        print(f"CSV file 'perturbed_{file_name}' created for individual dataset.")
 
 def main():
     cartesianpile = set()
     original_coords = []
     data_point(cartesianpile, original_coords)
-    coordinates = list(cartesianpile)
     print("Original and Transformed Coordinate Sample (Index 1738):")
     print(f"Original (lon, lat): {original_coords[1738][0]}, {original_coords[1738][1]}")
     print(f"Original Polar (r, theta): {original_coords[1738][2]}, {original_coords[1738][3]}")
