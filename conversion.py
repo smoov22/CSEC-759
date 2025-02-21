@@ -1,3 +1,14 @@
+# Kyle Mullen
+# February 20, 2025
+# For CSEC 759 Lab 1
+# LLM Rule Disclosure: The Large Language Model ChatGPT was asked for assistance as I was revising from a previous version of my script. 
+# Though it did suggest the usage of 'EARTH_RADIANS_METERS' as a variable in function,
+# it is not directly responsible for any code present, nor the process of testing and verifying data used. 
+# Please see the commit history of the GitHub repository used for the assignment for further detail on the initial version of the script.
+
+
+
+
 import cmath
 import random
 import glob
